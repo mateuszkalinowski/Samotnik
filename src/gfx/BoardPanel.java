@@ -19,7 +19,49 @@ public class BoardPanel extends Canvas{
             public void mouseClicked(MouseEvent e) {
                 if(!isSelected) {
                     if((e.getX()>margin && e.getX()<getWidth()-margin) && (e.getY()>margin && e.getY()<getHeight()-margin))
-                        System.out.println("tak");
+                    {
+                        selectedX = (e.getX()-margin)/oneFieldWidth;
+                        selectedY = (e.getY()-margin)/oneFieldHeight;
+                        isSelected = true;
+                        directions = board.possibleDirections(selectedX,selectedY);
+                    }
+                }
+                else {
+                    if((e.getX()>margin && e.getX()<getWidth()-margin) && (e.getY()>margin && e.getY()<getHeight()-margin))
+                    {
+                        int tempSelectedX = e.getX()/oneFieldWidth;
+                        int tempSelectedY = e.getY()/oneFieldHeight;
+
+                        if((tempSelectedX == selectedX) && (tempSelectedY == selectedY+2) && directions[2]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX][tempSelectedY-1]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                        }
+                        else if((tempSelectedX == selectedX) && (tempSelectedY == selectedY-2) && directions[0]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX][tempSelectedY+1]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                        }
+                        else if((tempSelectedX == selectedX+2) && (tempSelectedY == selectedY) && directions[1]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX-1][tempSelectedY]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                        }
+                        else if((tempSelectedX == selectedX-2) && (tempSelectedY == selectedY) && directions[3]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX+1][tempSelectedY]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                        }
+                        else
+                            isSelected = false;
+
+                    }
+                    else
+                       isSelected = false;
                 }
             }
         });
@@ -52,7 +94,6 @@ public class BoardPanel extends Canvas{
             g2.setStroke(new BasicStroke(1));
             g2.drawLine(margin,i*oneFieldHeight+margin,getWidth()-margin,i*oneFieldHeight+margin);
         }*/
-        g2.setColor(new Color(238,44,44));
         for(int i = 0; i < board.height;i++) {
             for(int j = 0; j < board.width;j++) {
                 if(board.board[j][i]==0 || board.board[j][i]==1)
@@ -65,6 +106,10 @@ public class BoardPanel extends Canvas{
                     g2.fillOval(j*oneFieldWidth+margin+inFieldMargin,i*oneFieldHeight+margin+inFieldMargin,oneFieldWidth-2*inFieldMargin,oneFieldHeight-2*inFieldMargin);
                 }
             }
+        }
+        if(isSelected) {
+            g2.setColor(new Color(238,44,44));
+            g2.fillOval(selectedX*oneFieldWidth+margin+inFieldMargin,selectedY*oneFieldHeight+margin+inFieldMargin,oneFieldWidth-2*inFieldMargin,oneFieldHeight-2*inFieldMargin);
         }
 
         //g2.setColor(Color.CYAN);
@@ -79,6 +124,8 @@ public class BoardPanel extends Canvas{
 
     private int oneFieldWidth;
     private int oneFieldHeight;
+
+    private boolean[] directions;
 
     private boolean isSelected = false;
     private int selectedX;
