@@ -39,6 +39,8 @@ public class BoardPanel extends Canvas{
                         if(firstMove && (board.boardType.equals("Kwadrat") || board.boardType.equals("Trojkat"))) {
                             if(board.board[selectedX][selectedY]==1) {
                                 board.board[selectedX][selectedY] = 0;
+                                Samotnik.mainFrame.tiles-=1;
+                                Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                                 firstMove = false;
                             }
                         }
@@ -60,6 +62,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX][tempSelectedY-1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else if((tempSelectedX == selectedX) && (tempSelectedY == selectedY-2) && directions[0]) {
@@ -67,6 +71,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX][tempSelectedY+1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else if((tempSelectedX == selectedX+2) && (tempSelectedY == selectedY) && directions[1]) {
@@ -74,6 +80,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX-1][tempSelectedY]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else if((tempSelectedX == selectedX-2) && (tempSelectedY == selectedY) && directions[3]) {
@@ -81,6 +89,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX+1][tempSelectedY]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         //TYLKO JESLI SA RUCHY PO SKOSIE
@@ -89,6 +99,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX-1][tempSelectedY+1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else if(board.diagonallyMoves && (tempSelectedX == selectedX+2) && (tempSelectedY == selectedY+2) && directions[5]) {
@@ -96,6 +108,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX-1][tempSelectedY-1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else if(board.diagonallyMoves && (tempSelectedX == selectedX-2) && (tempSelectedY == selectedY+2) && directions[6]) {
@@ -103,6 +117,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX+1][tempSelectedY-1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else if(board.diagonallyMoves && (tempSelectedX == selectedX-2) && (tempSelectedY == selectedY-2) && directions[7]) {
@@ -110,6 +126,8 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX+1][tempSelectedY+1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            Samotnik.mainFrame.tiles-=1;
+                            Samotnik.mainFrame.restTiles.setText("Pozostało: " + Samotnik.mainFrame.tiles);
                             checkNoMoves();
                         }
                         else

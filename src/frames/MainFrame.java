@@ -4,6 +4,7 @@ import gfx.BoardPanel;
 import logic.Board;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,17 +29,30 @@ public class MainFrame extends JFrame implements Runnable {
         gameBorderLayout = new JPanel(new BorderLayout());
         JLabel gameName = new JLabel("Samotnik",SwingConstants.CENTER);
         JPanel buttonsGridLayout = new JPanel(new GridLayout(2,1));
+        restTiles = new JLabel("Pozostało: 0");
+        gameBorderLayout.add(restTiles,BorderLayout.SOUTH);
         //boardPanel = new BoardPanel();
         buttonsGridLayout.setBorder(new EmptyBorder(100,100,100,100));
         JButton run = new JButton("Graj");
         run.addActionListener(e -> {
             int conditions[] = optionsDialog.showDialog();
-            if(conditions[0]==0)
+            if(conditions[0]==0) {
                 board = new Board();
-            else if(conditions[0]==1)
-                board = new Board(5+2*conditions[1]);
-            else if(conditions[0]==2)
-                board = new Board(5+2*conditions[1],5+2*conditions[1]);
+                tiles = 32;
+                restTiles.setText("Pozostało: 32");
+            }
+            else if(conditions[0]==1) {
+                board = new Board(5 + 2 * conditions[1]);
+                tiles = ((5 + 2 * conditions[1]) * (5 + 2 * conditions[1]));
+                restTiles.setText("Pozostało: " + ((5 + 2 * conditions[1]) * (5 + 2 * conditions[1])));
+            }
+            else if(conditions[0]==2) {
+                board = new Board(5 + 2 * conditions[1], 5 + 2 * conditions[1]);
+                int number = 5 + 2 * conditions[1];
+                double tilesD = ((number * number)/2.0) + (number/2.0);
+                tiles = (int) tilesD;
+                restTiles.setText("Pozostało: " + tiles);
+            }
             boardPanel = new BoardPanel(board);
             gameBorderLayout.add(boardPanel,BorderLayout.CENTER);
             this.getContentPane().removeAll();
@@ -109,6 +123,8 @@ public class MainFrame extends JFrame implements Runnable {
     }
     public OptionsFrame optionsDialog;
     public Thread game;
+    public JLabel restTiles;
+    public int tiles;
     private Board board;
     private BoardPanel boardPanel;
     private int FRAMERATE = 60;

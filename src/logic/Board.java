@@ -28,6 +28,7 @@ public class Board {
                 else
                     board[i][j]=1;
             }
+        board[3][3]=0;
         boardType = "Klasyczna";
 
     }
