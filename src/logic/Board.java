@@ -9,6 +9,7 @@ public class Board {
         this.width = size;
         this.height = size;
         this.size = size*size;
+        staticSize = this.size;
         board = new int[width][height];
         for(int i = 0; i < width;i++)
             for(int j = 0; j < height;j++)
@@ -21,6 +22,7 @@ public class Board {
         width = 7;
         height = 7;
         size = 32;
+        staticSize = this.size;
         board = new int[width][height];
         for(int i = 0; i < width;i++)
             for(int j = 0; j < height;j++) {
@@ -38,6 +40,7 @@ public class Board {
         this.height = height;
         double sizeD = (width * height)/2.0 + ((width)/2.0);
         this.size = (int)sizeD;
+        staticSize = this.size;
         diagonallyMoves = true;
         board = new int[width][height];
         int line = 1;
@@ -82,6 +85,7 @@ public class Board {
                 line++;
             }
         }
+        size = staticSize;
     }
     public boolean[] possibleDirections(int x,int y) {
         boolean result[] = new boolean[8];
@@ -171,6 +175,7 @@ public class Board {
     public int width;
     public int height;
     public int size;
+    public static int staticSize;
     public boolean diagonallyMoves;
     public String boardType;
     public int [][]board;

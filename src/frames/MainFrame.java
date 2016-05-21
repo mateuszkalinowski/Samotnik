@@ -38,7 +38,6 @@ public class MainFrame extends JFrame implements Runnable {
             int conditions[] = optionsDialog.showDialog();
             if(conditions[0]==0) {
                 board = new Board();
-                tiles = 32;
             }
             else if(conditions[0]==1) {
                 board = new Board(5 + 2 * conditions[1]);
@@ -120,7 +119,6 @@ public class MainFrame extends JFrame implements Runnable {
     public OptionsFrame optionsDialog;
     public Thread game;
     public JLabel restTiles;
-    public int tiles;
     private Board board;
     private BoardPanel boardPanel;
     private int FRAMERATE = 60;
