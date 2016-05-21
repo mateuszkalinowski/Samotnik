@@ -36,10 +36,17 @@ public class BoardPanel extends Canvas{
                     {
                         selectedX = (e.getX()-margin)/oneFieldWidth;
                         selectedY = (e.getY()-margin)/oneFieldHeight;
-                        if(board.board[selectedX][selectedY]==1) {
+                        if(firstMove && (board.boardType.equals("Kwadrat") || board.boardType.equals("Trojkat"))) {
+                            if(board.board[selectedX][selectedY]==1) {
+                                board.board[selectedX][selectedY] = 0;
+                                firstMove = false;
+                            }
+                        }
+                        else if(board.board[selectedX][selectedY]==1) {
                             isSelected = true;
                             directions = board.possibleDirections(selectedX, selectedY);
                         }
+
                     }
                 }
                 else {
@@ -53,64 +60,57 @@ public class BoardPanel extends Canvas{
                             board.board[tempSelectedX][tempSelectedY-1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
-                            if(!board.anyMoves()) {
-                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
-                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-                                if(selection==JOptionPane.OK_OPTION) {
-                                    resetBoard();
-                                }
-                                else {
-                                    System.exit(0);
-                                }
-                            }
+                            checkNoMoves();
                         }
                         else if((tempSelectedX == selectedX) && (tempSelectedY == selectedY-2) && directions[0]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX][tempSelectedY+1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
-                            if(!board.anyMoves()) {
-                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
-                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-                                if(selection==JOptionPane.OK_OPTION) {
-                                    resetBoard();
-                                }
-                                else {
-                                    System.exit(0);
-                                }
-                            }
+                            checkNoMoves();
                         }
                         else if((tempSelectedX == selectedX+2) && (tempSelectedY == selectedY) && directions[1]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX-1][tempSelectedY]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
-                            if(!board.anyMoves()) {
-                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
-                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-                                if(selection==JOptionPane.OK_OPTION) {
-                                    resetBoard();
-                                }
-                                else {
-                                    System.exit(0);
-                                }
-                            }
+                            checkNoMoves();
                         }
                         else if((tempSelectedX == selectedX-2) && (tempSelectedY == selectedY) && directions[3]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX+1][tempSelectedY]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
-                            if(!board.anyMoves()) {
-                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
-                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-                                if(selection==JOptionPane.OK_OPTION) {
-                                    resetBoard();
-                                }
-                                else {
-                                    System.exit(0);
-                                }
-                            }
+                            checkNoMoves();
+                        }
+                        //TYLKO JESLI SA RUCHY PO SKOSIE
+                        else if(board.diagonallyMoves && (tempSelectedX == selectedX+2) && (tempSelectedY == selectedY-2) && directions[4]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX-1][tempSelectedY+1]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                            checkNoMoves();
+                        }
+                        else if(board.diagonallyMoves && (tempSelectedX == selectedX+2) && (tempSelectedY == selectedY+2) && directions[5]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX-1][tempSelectedY-1]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                            checkNoMoves();
+                        }
+                        else if(board.diagonallyMoves && (tempSelectedX == selectedX-2) && (tempSelectedY == selectedY+2) && directions[6]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX+1][tempSelectedY-1]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                            checkNoMoves();
+                        }
+                        else if(board.diagonallyMoves && (tempSelectedX == selectedX-2) && (tempSelectedY == selectedY-2) && directions[7]) {
+                            board.board[tempSelectedX][tempSelectedY]=1;
+                            board.board[tempSelectedX+1][tempSelectedY+1]=0;
+                            board.board[selectedX][selectedY]=0;
+                            isSelected = false;
+                            checkNoMoves();
                         }
                         else
                             isSelected = false;
@@ -160,6 +160,19 @@ public class BoardPanel extends Canvas{
         }
 
     }
+    private void checkNoMoves(){
+        if(!board.anyMoves()) {
+            int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
+                    " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+            if(selection==JOptionPane.OK_OPTION) {
+                resetBoard();
+                firstMove = true;
+            }
+            else {
+                System.exit(0);
+            }
+        }
+    }
     public void resetBoard() {
         board.reset();
         isSelected = false;
@@ -178,6 +191,8 @@ public class BoardPanel extends Canvas{
     private boolean isSelected = false;
     private int selectedX;
     private int selectedY;
+
+    private boolean firstMove = true;
 
     private Graphics g;
 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Samotnik:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="Samotnik.jar">
+      <element id="module-output" name="Samotnik" />
+    </root>
+  </artifact>
+</component>

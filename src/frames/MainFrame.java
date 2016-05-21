@@ -1,5 +1,6 @@
-package gfx;
+package frames;
 
+import gfx.BoardPanel;
 import logic.Board;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class MainFrame extends JFrame implements Runnable {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        optionsDialog = new OptionsFrame();
         mainBorderLayout = new JPanel(new BorderLayout());
         gameBorderLayout = new JPanel(new BorderLayout());
         JLabel gameName = new JLabel("Samotnik",SwingConstants.CENTER);
@@ -30,7 +32,13 @@ public class MainFrame extends JFrame implements Runnable {
         buttonsGridLayout.setBorder(new EmptyBorder(100,100,100,100));
         JButton run = new JButton("Graj");
         run.addActionListener(e -> {
-            board = new Board();
+            int conditions[] = optionsDialog.showDialog();
+            if(conditions[0]==0)
+                board = new Board();
+            else if(conditions[0]==1)
+                board = new Board(5+2*conditions[1]);
+            else if(conditions[0]==2)
+                board = new Board(5+2*conditions[1],5+2*conditions[1]);
             boardPanel = new BoardPanel(board);
             gameBorderLayout.add(boardPanel,BorderLayout.CENTER);
             this.getContentPane().removeAll();
@@ -99,6 +107,7 @@ public class MainFrame extends JFrame implements Runnable {
     public void tick(int ticks) {
 
     }
+    public OptionsFrame optionsDialog;
     public Thread game;
     private Board board;
     private BoardPanel boardPanel;

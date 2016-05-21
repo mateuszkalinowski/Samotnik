@@ -1,13 +1,10 @@
 package core;
 
 
-import gfx.MainFrame;
+import frames.MainFrame;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by Mateusz on 20.05.2016.
