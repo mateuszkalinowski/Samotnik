@@ -1,8 +1,12 @@
 package gfx;
 
+import core.Samotnik;
 import logic.Board;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
@@ -14,6 +18,16 @@ import java.awt.image.BufferStrategy;
 public class BoardPanel extends Canvas{
     public BoardPanel(Board board) {
         this.board = board;
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+            }
+        });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -22,43 +36,84 @@ public class BoardPanel extends Canvas{
                     {
                         selectedX = (e.getX()-margin)/oneFieldWidth;
                         selectedY = (e.getY()-margin)/oneFieldHeight;
-                        isSelected = true;
-                        directions = board.possibleDirections(selectedX,selectedY);
+                        if(board.board[selectedX][selectedY]==1) {
+                            isSelected = true;
+                            directions = board.possibleDirections(selectedX, selectedY);
+                        }
                     }
                 }
                 else {
                     if((e.getX()>margin && e.getX()<getWidth()-margin) && (e.getY()>margin && e.getY()<getHeight()-margin))
                     {
-                        int tempSelectedX = e.getX()/oneFieldWidth;
-                        int tempSelectedY = e.getY()/oneFieldHeight;
+                        int tempSelectedX = (e.getX()-margin)/oneFieldWidth;
+                        int tempSelectedY = (e.getY()-margin)/oneFieldHeight;
 
                         if((tempSelectedX == selectedX) && (tempSelectedY == selectedY+2) && directions[2]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX][tempSelectedY-1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            if(!board.anyMoves()) {
+                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
+                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                                if(selection==JOptionPane.OK_OPTION) {
+                                    resetBoard();
+                                }
+                                else {
+                                    System.exit(0);
+                                }
+                            }
                         }
                         else if((tempSelectedX == selectedX) && (tempSelectedY == selectedY-2) && directions[0]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX][tempSelectedY+1]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            if(!board.anyMoves()) {
+                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
+                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                                if(selection==JOptionPane.OK_OPTION) {
+                                    resetBoard();
+                                }
+                                else {
+                                    System.exit(0);
+                                }
+                            }
                         }
                         else if((tempSelectedX == selectedX+2) && (tempSelectedY == selectedY) && directions[1]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX-1][tempSelectedY]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            if(!board.anyMoves()) {
+                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
+                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                                if(selection==JOptionPane.OK_OPTION) {
+                                    resetBoard();
+                                }
+                                else {
+                                    System.exit(0);
+                                }
+                            }
                         }
                         else if((tempSelectedX == selectedX-2) && (tempSelectedY == selectedY) && directions[3]) {
                             board.board[tempSelectedX][tempSelectedY]=1;
                             board.board[tempSelectedX+1][tempSelectedY]=0;
                             board.board[selectedX][selectedY]=0;
                             isSelected = false;
+                            if(!board.anyMoves()) {
+                                int selection = JOptionPane.showConfirmDialog(null, "Koniec możliwych ruchów, chcesz zagrać jeszcze raz?", "Koniec" +
+                                        " gry",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                                if(selection==JOptionPane.OK_OPTION) {
+                                    resetBoard();
+                                }
+                                else {
+                                    System.exit(0);
+                                }
+                            }
                         }
                         else
                             isSelected = false;
-
                     }
                     else
                        isSelected = false;
@@ -86,14 +141,6 @@ public class BoardPanel extends Canvas{
 
         oneFieldWidth = (width-margin*2)/board.width;
         oneFieldHeight = (height-margin*2)/board.height;
-      /*  for(int i = 1; i < board.width;i++) {
-            g2.setStroke(new BasicStroke(1));
-            g2.drawLine(i*oneFieldWidth+margin,margin,i*oneFieldWidth+margin,getHeight()-margin);
-        }
-        for(int i = 1; i < board.height;i++) {
-            g2.setStroke(new BasicStroke(1));
-            g2.drawLine(margin,i*oneFieldHeight+margin,getWidth()-margin,i*oneFieldHeight+margin);
-        }*/
         for(int i = 0; i < board.height;i++) {
             for(int j = 0; j < board.width;j++) {
                 if(board.board[j][i]==0 || board.board[j][i]==1)
@@ -112,9 +159,10 @@ public class BoardPanel extends Canvas{
             g2.fillOval(selectedX*oneFieldWidth+margin+inFieldMargin,selectedY*oneFieldHeight+margin+inFieldMargin,oneFieldWidth-2*inFieldMargin,oneFieldHeight-2*inFieldMargin);
         }
 
-        //g2.setColor(Color.CYAN);
-        //g2.drawOval(0,0,50,50);
-        //g2.fillOval(0,0,50,50);
+    }
+    public void resetBoard() {
+        board.reset();
+        isSelected = false;
     }
     private Board board;
 

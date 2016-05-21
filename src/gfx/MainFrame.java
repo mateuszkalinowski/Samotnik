@@ -22,7 +22,6 @@ public class MainFrame extends JFrame implements Runnable {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-        //board = new Board();
         mainBorderLayout = new JPanel(new BorderLayout());
         gameBorderLayout = new JPanel(new BorderLayout());
         JLabel gameName = new JLabel("Samotnik",SwingConstants.CENTER);
@@ -39,7 +38,9 @@ public class MainFrame extends JFrame implements Runnable {
             this.revalidate();
             this.repaint();
             running = true;
-            new Thread(this).start();
+            game = new Thread(this);
+            game.start();
+
         });
         JButton exit = new JButton("Wyjdź");
         exit.addActionListener(new ActionListener() {
@@ -58,6 +59,9 @@ public class MainFrame extends JFrame implements Runnable {
 
 
     }
+
+
+
     @Override
     public void run(){
         long lastTime = System.nanoTime();
@@ -69,32 +73,33 @@ public class MainFrame extends JFrame implements Runnable {
         long lastTimer = System.currentTimeMillis();
         double delta = 0;
         boolean shouldRender = false;
-        while(running) {
-            long now = System.nanoTime();
-            delta +=(now = lastTime) / nsPerTick;
-            lastTime = now;
-            while(delta >=1 ) {
-                shouldRender = true;
-                ticks++;
-                tick(ticks);
-                delta -=1;
+            while (running) {
+                long now = System.nanoTime();
+                delta += (now = lastTime) / nsPerTick;
+                lastTime = now;
+                while (delta >= 1) {
+                    shouldRender = true;
+                    ticks++;
+                    tick(ticks);
+                    delta -= 1;
+                }
+                if (shouldRender) {
+                    frames++;
+                    boardPanel.render();
+                    shouldRender = false;
+                }
+                if (System.currentTimeMillis() - lastTimer >= 1000) {
+                    lastTimer += 1000;
+                    //System.out.println(ticks + " ticks, " + frames + " frames");
+                    frames = 0;
+                    ticks = 0;
+                }
             }
-            if(shouldRender) {
-                frames++;
-                boardPanel.render();
-                shouldRender = false;
-            }
-            if(System.currentTimeMillis() - lastTimer >=1000) {
-                lastTimer+=1000;
-                //System.out.println(ticks + " ticks, " + frames + " frames");
-                frames = 0;
-                ticks = 0;
-            }
-        }
     }
     public void tick(int ticks) {
 
     }
+    public Thread game;
     private Board board;
     private BoardPanel boardPanel;
     private int FRAMERATE = 60;
