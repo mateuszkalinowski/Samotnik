@@ -193,6 +193,7 @@ public class BoardPanel extends Canvas{
     }
     public void resetBoard() {
         board.reset();
+        Samotnik.mainFrame.restTiles.setText("Pozostało: " + board.size);
         isSelected = false;
     }
     private Board board;

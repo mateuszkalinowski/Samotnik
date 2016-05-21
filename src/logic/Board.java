@@ -8,7 +8,7 @@ public class Board {
     public Board(int size) {
         this.width = size;
         this.height = size;
-
+        this.size = size*size;
         board = new int[width][height];
         for(int i = 0; i < width;i++)
             for(int j = 0; j < height;j++)
@@ -20,6 +20,7 @@ public class Board {
     public Board() {
         width = 7;
         height = 7;
+        size = 32;
         board = new int[width][height];
         for(int i = 0; i < width;i++)
             for(int j = 0; j < height;j++) {
@@ -35,6 +36,8 @@ public class Board {
     public Board(int width,int height) {
         this.width = width;
         this.height = height;
+        double sizeD = (width * height)/2.0 + ((width)/2.0);
+        this.size = (int)sizeD;
         diagonallyMoves = true;
         board = new int[width][height];
         int line = 1;
@@ -167,6 +170,7 @@ public class Board {
 
     public int width;
     public int height;
+    public int size;
     public boolean diagonallyMoves;
     public String boardType;
     public int [][]board;
